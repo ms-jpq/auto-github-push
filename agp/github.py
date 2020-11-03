@@ -18,7 +18,7 @@ class RepoInfo:
 
 
 async def ls_repos(username: str) -> Sequence[RepoInfo]:
-    uri = f"https://api.github.com/users/{username}/repos"
+    uri = f"https://api.github.com/users/{username}/repos?per_page=100"
     data = await req(uri)
     repos = loads(data)
     names = tuple(
