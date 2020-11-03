@@ -93,3 +93,4 @@ async def increment_push(
     await call("git", "add", "-A", cwd=repo_dir, expect=0)
     await call("git", "commit", "-m", msg, cwd=repo_dir, expect=0)
     await call("git", "push", "--force", cwd=repo_dir, expect=0)
+    print(f"Done -- {repo_name}")

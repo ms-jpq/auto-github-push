@@ -17,6 +17,7 @@ bot_email = "agp@github.com"
 async def main() -> None:
     username = environ["GITHUB_USER"]
     token = environ["GITHUB_TOKEN"]
+    print(f"-- AGP for {username} --")
 
     rmtree(TEMP_DIR, ignore_errors=True)
     makedirs(TEMP_DIR, exist_ok=True)
