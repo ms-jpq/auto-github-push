@@ -38,9 +38,9 @@ async def check_exists(repo: RepoInfo, resource: str) -> bool:
     try:
         await req(uri)
     except HTTPError:
-        return True
-    else:
         return False
+    else:
+        return True
 
 
 async def elligible_repos(username: str) -> Sequence[RepoInfo]:
@@ -50,7 +50,7 @@ async def elligible_repos(username: str) -> Sequence[RepoInfo]:
     async def cont() -> AsyncIterator:
         for repo in repos:
             exists = await check_exists(repo, resource=NO_AGP)
-            if exists:
+            if not exists:
                 yield repo
 
     return [repo async for repo in cont()]
