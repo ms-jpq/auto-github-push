@@ -44,11 +44,12 @@ async def check_exists(repo: RepoInfo, resource: str) -> bool:
 
 
 async def elligible_repos(username: str) -> Sequence[RepoInfo]:
+    NO_AGP = join(".github", ".noagp")
     repos = await ls_repos(username=username)
 
     async def cont() -> AsyncIterator:
         for repo in repos:
-            exists = await check_exists(repo, resource="action.yml")
+            exists = await check_exists(repo, resource=NO_AGP)
             if exists:
                 yield repo
 

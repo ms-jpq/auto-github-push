@@ -4,7 +4,7 @@ name: Release
 on:
   push:
     branches:
-      - whale
+      - agp
   schedule:
     - cron: "0 0 * * *" # daily
 
