@@ -47,7 +47,7 @@ async def elligible_repos(username: str) -> Sequence[RepoInfo]:
     NO_AGP = join(".github", ".noagp")
     repos = await ls_repos(username=username)
 
-    async def cont() -> AsyncIterator:
+    async def cont() -> AsyncIterator[RepoInfo]:
         for repo in repos:
             exists = await check_exists(repo, resource=NO_AGP)
             if not exists:
