@@ -15,7 +15,7 @@ bot_email = "agp@github.com"
 
 
 async def main() -> None:
-    username = environ["GITHUB_USER"]
+    username = environ["GITHUB_ACTOR"]
     token = environ["GITHUB_TOKEN"]
     print(f"-- AGP for {username} --")
 
