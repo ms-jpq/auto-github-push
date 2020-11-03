@@ -77,7 +77,7 @@ async def increment_push(
     git_uri = tokenify_repo(full_name, username=username, token=token)
     repo_dir = join(base_dir, repo_name)
     spec_dir = join(repo_dir, ".github")
-    inc_file = join(spec_dir, ".inc")
+    inc_file = join(spec_dir, ".agp")
 
     time = datetime.now().strftime("%Y-%m-%d %H:%M")
     msg = f"CI (AGP) - {time}"
