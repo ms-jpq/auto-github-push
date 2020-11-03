@@ -2,6 +2,7 @@
 name: AGP
 
 on:
+  push:
   schedule:
     - cron: "0 0 * * *" # daily
 
@@ -11,6 +12,6 @@ jobs:
 
     steps:
       - name: AGP
-        uses: ms-jpq/auto-github-push@2c564a3a357fba357c1a1e8d89533e6c2db374de
+        uses: ms-jpq/auto-github-push@a9011528f1e6d565f21b215b1c45a8428841b617
         with:
           token: ${{ secrets.CI_TOKEN }}
