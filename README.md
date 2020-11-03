@@ -10,7 +10,11 @@ This will refresh various Github inactivity countdowns.
 
 1. Create a token with repo access.
 
-2. Add `.github/workflows/agp.yml` to the repo. [Example here](https://github.com/ms-jpq/auto-github-push/blob/agp/.github/workflows/agp.yml).
+2. Add `CI_TOKEN` to repo's secrets
+
+3. Add `.github/workflows/agp.yml` to the repo. [Example here](https://github.com/ms-jpq/auto-github-push/blob/agp/.github/workflows/agp.yml).
+
+And you are good!
 
 ## Disable for single repo
 
