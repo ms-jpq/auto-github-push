@@ -4,8 +4,7 @@ from json import loads
 from os import makedirs
 from os.path import join
 from typing import AsyncIterator, Sequence
-
-from genericpath import exists
+from urllib.error import HTTPError
 
 from .da import call, req
 
@@ -35,11 +34,10 @@ async def ls_repos(username: str) -> Sequence[RepoInfo]:
 
 
 async def check_exists(repo: RepoInfo, resource: str) -> bool:
-    uri = f"https://raw.githubusercontent.com/{repo.full_name}/{repo.default_branch}/${resource}"
+    uri = f"https://raw.githubusercontent.com/{repo.full_name}/{repo.default_branch}/{resource}"
     try:
         await req(uri)
-    except Exception as e:
-        print(type(e))
+    except HTTPError:
         return False
     else:
         return True

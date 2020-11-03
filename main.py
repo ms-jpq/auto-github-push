@@ -3,6 +3,7 @@
 from asyncio import gather, run
 from os import environ, makedirs
 from os.path import dirname, join, realpath
+from shutil import rmtree
 
 from agp.da import call
 from agp.github import elligible_repos, increment_push
@@ -17,7 +18,9 @@ async def main() -> None:
     username = "ms-jpq"
     token = environ["TOKEN"]
 
+    rmtree(TEMP_DIR, ignore_errors=True)
     makedirs(TEMP_DIR, exist_ok=True)
+
     repos = await elligible_repos(username=username)
     tasks = (
         increment_push(
