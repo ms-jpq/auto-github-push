@@ -17,7 +17,7 @@ runs:
   using: docker
   image: "Dockerfile"
   env:
-    GITHUB_USERNAME: "${{ inputs.username }}"
+    GITHUB_USER: "${{ inputs.username }}"
     GITHUB_TOKEN: "${{ inputs.token }}"
 
 branding:
