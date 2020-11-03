@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: AGP
-        uses: ms-jpq/auto-github-push@346610e12b0394f20a5dea3d13f46e0dd7724b22
+        uses: ms-jpq/auto-github-push@b87df265bdc149bc1771639e5b483b9e17f5980e
         with:
           username: ${{ env.GITHUB_ACTOR }}
           token: ${{ secrets.CI_TOKEN }}
