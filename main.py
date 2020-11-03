@@ -4,6 +4,7 @@ from asyncio import gather, run
 from os import environ, makedirs
 from os.path import dirname, join, realpath
 from shutil import rmtree
+from sys import stderr
 
 from agp.da import call
 from agp.github import elligible_repos, increment_push
@@ -35,7 +36,11 @@ async def main() -> None:
         )
         for repo in repos
     )
-    await gather(*tasks)
+    try:
+        await gather(*tasks)
+    except Exception as e:
+        print(e, file=stderr)
+        raise
 
 
 run(main())
