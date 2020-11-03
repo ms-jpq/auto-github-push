@@ -38,9 +38,9 @@ async def check_exists(repo: RepoInfo, resource: str) -> bool:
     try:
         await req(uri)
     except HTTPError:
-        return False
-    else:
         return True
+    else:
+        return False
 
 
 async def elligible_repos(username: str) -> Sequence[RepoInfo]:
