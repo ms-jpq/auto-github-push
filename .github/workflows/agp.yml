@@ -12,6 +12,6 @@ jobs:
 
     steps:
       - name: AGP
-        uses: ms-jpq/auto-github-push@c1749aa69a691327b0f204ce5cc20d43bd9668fd
+        uses: ms-jpq/auto-github-push@4a40a2f4bd33524de08e45e50fcfc08fd2ccb93d
         with:
           token: ${{ secrets.CI_TOKEN }}
