@@ -14,5 +14,5 @@ jobs:
       - name: AGP
         uses: ms-jpq/auto-github-push@346610e12b0394f20a5dea3d13f46e0dd7724b22
         with:
-          username: ${{ GITHUB_ACTOR }}
+          username: ${{ env.GITHUB_ACTOR }}
           token: ${{ secrets.CI_TOKEN }}
