@@ -1,0 +1,25 @@
+---
+name: Auto Github Push
+author: ms-jpq
+description: |-
+  This will refresh various Github inactivity countdowns.
+inputs:
+  username:
+    required: True
+    description: |-
+      Github username
+  token:
+    required: True
+    description: |-
+      Github token
+
+runs:
+  using: docker
+  image: "Dockerfile"
+  env:
+    GITHUB_USERNAME: "${{ inputs.username }}"
+    GITHUB_TOKEN: "${{ inputs.token }}"
+
+branding:
+  icon: anchor
+  color: black
