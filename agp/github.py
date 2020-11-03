@@ -97,7 +97,7 @@ async def increment_push(
     await call("git", "clone", "--depth=1", git_uri, cwd=base_dir, expect=0)
 
     makedirs(spec_dir, exist_ok=True)
-    inc_ver(inc_file, msg=msg)
+    inc_ver(inc_file, msg=long_msg)
 
     await call("git", "config", "user.email", bot_email, cwd=repo_dir, expect=0)
     await call("git", "config", "user.name", bot_name, cwd=repo_dir, expect=0)
