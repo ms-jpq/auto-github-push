@@ -6,6 +6,11 @@ This will refresh various Github inactivity countdowns.
 
 ## How to use
 
+0) Create an empty repo
+
+1) Create a token with repo access.
+
+
 
 ## Disable for single repo
 

@@ -1,13 +1,9 @@
 ---
-name: Release
+name: AGP
 
 on:
-  push:
-    branches:
-      - agp
   schedule:
     - cron: "0 0 * * *" # daily
-
 
 jobs:
   build:
@@ -17,8 +13,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      # - name: Build
-      #   uses: docker/build-push-action@v1
-      #   with:
-      #     username: ${{ secrets.DOCKER_USERNAME }}
-      #     password: ${{ secrets.CI_TOKEN }}
+      - name: AGP
+        uses: ms-jpq/auto-github-push@346610e12b0394f20a5dea3d13f46e0dd7724b22
+        with:
+          username: ${{ GITHUB_ACTOR }}
+          token: ${{ secrets.CI_TOKEN }}
