@@ -67,16 +67,15 @@ def inc_ver(dest: str, msg: str) -> None:
 
 
 async def increment_push(
-    full_name: str,
-    repo_name: str,
+    repo: RepoInfo,
     username: str,
     token: str,
     base_dir: str,
     bot_name: str,
     bot_email: str,
-) -> None:
-    git_uri = tokenify_repo(full_name, username=username, token=token)
-    repo_dir = join(base_dir, repo_name)
+) -> RepoInfo:
+    git_uri = tokenify_repo(repo.full_name, username=username, token=token)
+    repo_dir = join(base_dir, repo.name)
     spec_dir = join(repo_dir, ".github")
     inc_file = join(spec_dir, ".agp")
 
@@ -93,4 +92,5 @@ async def increment_push(
     await call("git", "add", "-A", cwd=repo_dir, expect=0)
     await call("git", "commit", "-m", msg, cwd=repo_dir, expect=0)
     await call("git", "push", "--force", cwd=repo_dir, expect=0)
-    print(f"Done -- {repo_name}")
+
+    return repo

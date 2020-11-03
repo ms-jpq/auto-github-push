@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from asyncio import gather, run
+from asyncio import as_completed, run
 from os import environ, makedirs
 from os.path import dirname, join, realpath
 from shutil import rmtree
@@ -26,8 +26,7 @@ async def main() -> None:
     repos = await elligible_repos(username=username)
     tasks = (
         increment_push(
-            full_name=repo.full_name,
-            repo_name=repo.name,
+            repo=repo,
             username=username,
             token=token,
             base_dir=TEMP_DIR,
@@ -36,11 +35,10 @@ async def main() -> None:
         )
         for repo in repos
     )
-    try:
-        await gather(*tasks)
-    except Exception as e:
-        print(e, file=stderr)
-        raise
+
+    for coro in as_completed(tuple(tasks)):
+        repo = await coro
+        print(f"Done -- {repo.name}")
 
 
 run(main())
