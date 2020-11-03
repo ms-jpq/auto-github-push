@@ -3,6 +3,7 @@ from datetime import datetime
 from json import loads
 from os import makedirs
 from os.path import join
+from string import Template
 from typing import AsyncIterator, Sequence
 from urllib.error import HTTPError
 
@@ -67,6 +68,15 @@ def inc_ver(dest: str, msg: str) -> None:
         fd.write(msg)
 
 
+TEMPLATE = """
+Auto Github Push (AGP)
+https://github.com/ms-jpq/auto-github-push
+
+---
+$time
+"""
+
+
 async def increment_push(
     repo: RepoInfo,
     username: str,
@@ -81,6 +91,7 @@ async def increment_push(
     inc_file = join(spec_dir, ".agp")
 
     time = datetime.now().strftime("%Y-%m-%d %H:%M")
+    long_msg = Template(TEMPLATE).substitute(time=time)
     msg = f"CI (AGP) - {time}"
 
     await call("git", "clone", "--depth=1", git_uri, cwd=base_dir, expect=0)
