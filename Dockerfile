@@ -1,6 +1,6 @@
 FROM python:alpine
 
-RUN apk add git
+RUN apk add --no-cache -- git
 
-COPY . /agp/
-ENTRYPOINT [ "/agp/main.py" ]
+COPY ./agp /agp
+ENTRYPOINT [ "python3", "-m", "agp" ]

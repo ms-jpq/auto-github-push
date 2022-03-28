@@ -1,19 +1,11 @@
-from asyncio import create_subprocess_exec, get_running_loop
+from asyncio import create_subprocess_exec, to_thread
 from asyncio.subprocess import DEVNULL, PIPE
 from dataclasses import dataclass
-from functools import partial
 from http.client import HTTPResponse
-from os import environ, getcwd
-from typing import Any, Callable, Dict, Optional, TypeVar, Union, cast
-from urllib.request import HTTPRedirectHandler, Request, build_opener
-
-T = TypeVar("T")
-
-
-async def run_in_executor(f: Callable[..., T], *args: Any, **kwargs: Any) -> T:
-    loop = get_running_loop()
-    cont = partial(f, *args, **kwargs)
-    return await loop.run_in_executor(None, cont)
+from os import environ
+from pathlib import Path, PurePath
+from typing import Any, Dict, Optional, Union, cast
+from urllib.request import Request, build_opener
 
 
 @dataclass(frozen=True)
@@ -27,7 +19,7 @@ async def call(
     prog: str,
     *args: str,
     env: Dict[str, str] = {},
-    cwd: str = getcwd(),
+    cwd: PurePath = Path.cwd(),
     expect: Optional[int] = None
 ) -> ProcReturn:
     envi = {**environ, **env}
@@ -51,5 +43,5 @@ async def req(req: Union[Request, str]) -> Any:
             resp = cast(HTTPResponse, resp)
             return resp.read()
 
-    msg = await run_in_executor(_req)
+    msg = await to_thread(_req)
     return msg

@@ -18,7 +18,9 @@ jobs:
         uses: actions/setup-python@v2
 
       - name: Pip Packages
-        run: pip install -U mypy
+        run: |-
+          pip install -U mypy
 
       - name: Lint
-        run: ./lint.sh
+        run: |-
+          mypy -- .

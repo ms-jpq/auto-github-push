@@ -1,10 +1,10 @@
 from dataclasses import dataclass
 from datetime import datetime
 from json import loads
-from os import makedirs
-from os.path import join
+from pathlib import Path, PurePosixPath
+from posixpath import normcase
 from string import Template
-from typing import AsyncIterator, Sequence
+from typing import AsyncIterator, Optional, Sequence
 from urllib.error import HTTPError
 
 from .da import call, req
@@ -46,26 +46,22 @@ async def check_exists(repo: RepoInfo, resource: str) -> bool:
 
 
 async def elligible_repos(username: str) -> Sequence[RepoInfo]:
-    NO_AGP = join(".github", ".noagp")
+    no_agp = normcase(PurePosixPath(".github") / ".noagp")
     repos = await ls_repos(username=username)
 
     async def cont() -> AsyncIterator[RepoInfo]:
         for repo in repos:
-            exists = await check_exists(repo, resource=NO_AGP)
+            exists = await check_exists(repo, resource=no_agp)
             if not exists:
                 yield repo
 
     return [repo async for repo in cont()]
 
 
-def tokenify_repo(repo_name: str, username: str, token: str) -> str:
-    tokenized = f"https://{username}:{token}@github.com/{repo_name}.git"
+def tokenify_repo(repo_name: str, username: str, token: Optional[str]) -> str:
+    tok = f":{token}" if token else ""
+    tokenized = f"https://{username}{tok}@github.com/{repo_name}.git"
     return tokenized
-
-
-def inc_ver(dest: str, msg: str) -> None:
-    with open(dest, "w") as fd:
-        fd.write(msg)
 
 
 TEMPLATE = """
@@ -80,15 +76,15 @@ $time
 async def increment_push(
     repo: RepoInfo,
     username: str,
-    token: str,
-    base_dir: str,
+    token: Optional[str],
+    base_dir: Path,
     bot_name: str,
     bot_email: str,
 ) -> RepoInfo:
     git_uri = tokenify_repo(repo.full_name, username=username, token=token)
-    repo_dir = join(base_dir, repo.name)
-    spec_dir = join(repo_dir, ".github")
-    inc_file = join(spec_dir, ".agp")
+    repo_dir = base_dir / repo.name
+    spec_dir = repo_dir / ".github"
+    inc_file = spec_dir / ".agp"
 
     time = datetime.now().strftime("%Y-%m-%d %H:%M")
     long_msg = Template(TEMPLATE).substitute(time=time)
@@ -96,8 +92,8 @@ async def increment_push(
 
     await call("git", "clone", "--depth=1", git_uri, cwd=base_dir, expect=0)
 
-    makedirs(spec_dir, exist_ok=True)
-    inc_ver(inc_file, msg=long_msg)
+    spec_dir.mkdir(parents=True, exist_ok=True)
+    inc_file.write_text(long_msg)
 
     await call("git", "config", "user.email", bot_email, cwd=repo_dir, expect=0)
     await call("git", "config", "user.name", bot_name, cwd=repo_dir, expect=0)
