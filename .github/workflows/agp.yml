@@ -2,6 +2,7 @@
 name: AGP
 
 on:
+  push:
   schedule:
     - cron: "0 0 * * *" # daily
 
